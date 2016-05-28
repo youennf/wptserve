@@ -6,6 +6,7 @@ import urllib
 import urlparse
 
 from constants import content_types
+from logger import get_logger
 from pipes import Pipeline, template
 from ranges import RangeParser
 from request import Authentication
@@ -147,6 +148,7 @@ class FileHandler(object):
             return response
 
         except (OSError, IOError):
+            get_logger().debug(traceback.format_exc())
             raise HTTPException(404)
 
     def get_headers(self, request, path):
