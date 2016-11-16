@@ -126,6 +126,7 @@ class FileHandler(object):
                         raise
             else:
                 byte_ranges = None
+
             data = self.get_data(response, path, byte_ranges)
             response.content = data
             query = urlparse.parse_qs(request.url_parts.query)
@@ -140,6 +141,8 @@ class FileHandler(object):
 
             if pipeline is not None:
                 response = pipeline(request, response)
+            elif byte_ranges is None:
+                response.headers.set("Content-Length", file_size)
 
             return response
 
